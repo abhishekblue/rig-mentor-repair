@@ -17,7 +17,7 @@ export default function MultiStepForm() {
     productModel: "",
     serialNumber: "",
     issueDescription: "",
-    uploadedFile: null,
+    uploadedFiles: [],
     pickupDate: "",
   })
 

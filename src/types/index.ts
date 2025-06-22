@@ -4,7 +4,7 @@ export interface FormData {
   productModel: string
   serialNumber: string
   issueDescription: string
-  uploadedFile: File | null
+  uploadedFiles: File[]
   pickupDate: string
 }
 

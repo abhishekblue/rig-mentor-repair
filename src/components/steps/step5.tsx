@@ -41,6 +41,20 @@ function getUniqueTrackingID(supabase: SupabaseClient, length = 6): Promise<stri
 export default function Step5({ formData, prevStep }: StepProps) {
   const [checkingLogin, setCheckingLogin] = useState(false)
 
+  // Helper: Uploads file to Supabase Storage & returns public URL
+  async function uploadFileToStorage(file: File, userEmail: string) {
+    const filePath = `${userEmail}/${Date.now()}-${file.name}`
+    const { error } = await supabase.storage
+      .from('repairs')
+      .upload(filePath, file, { cacheControl: '3600', upsert: false })
+    if (error) throw error
+
+    const { data } = supabase.storage
+      .from('repairs')
+      .getPublicUrl(filePath)
+    return data.publicUrl
+  }
+
   const handleLoginPopup = () => {
     localStorage.setItem("pendingRepair", JSON.stringify(formData))
 
@@ -52,87 +66,99 @@ export default function Step5({ formData, prevStep }: StepProps) {
 
     setCheckingLogin(true)
 
-    let userEmail: null = null
+    let userEmail: string | null = null
 
-const interval = setInterval(() => {
-  if (!popup || popup.closed) {
-    clearInterval(interval)
-    setCheckingLogin(false)
-    return
-  }
-
-  fetch("https://rigmentor.in/wp-json/wp/v2/users/me", {
-    credentials: "include"
-  })
-    .then((res) => {
-      if (res.ok) {
+    const interval = setInterval(() => {
+      if (!popup || popup.closed) {
         clearInterval(interval)
-        popup.close()
-
-        return res.json()
-      } else {
-        throw new Error("Not logged in")
+        setCheckingLogin(false)
+        return
       }
-    })
-    .then((user) => {
-      userEmail = user.email
 
-      const saved = localStorage.getItem("pendingRepair")
-      if (saved) {
-        const parsed = JSON.parse(saved)
+      fetch("https://rigmentor.in/wp-json/wp/v2/users/me", {
+        credentials: "include"
+      })
+        .then((res) => {
+          if (res.ok) {
+            clearInterval(interval)
+            popup.close()
+            return res.json()
+          } else {
+            throw new Error("Not logged in")
+          }
+        })
+        .then(async (user) => {
+          userEmail = user.email
 
-        getUniqueTrackingID(supabase)
-        .then((tracking_id) => {
-        supabase
-          .from("repairs")
-          .insert([
-            {
-              user_id: userEmail,
-              product_type: parsed.productType,
-              product_model: parsed.productModel,
-              serial_number: parsed.serialNumber,
-              issue_description: parsed.issueDescription,
-              pickup_date: parsed.pickupDate,
-              uploaded_file_url: null,
-              status: "Request Submitted",
-              tracking_id
+          const saved = localStorage.getItem("pendingRepair")
+          if (saved) {
+            const parsed = JSON.parse(saved)
+
+            // --- File upload step ---
+            const uploadedFileUrls: string[] = [];
+            if (formData.uploadedFiles && formData.uploadedFiles.length && userEmail) {
+              for (const file of formData.uploadedFiles) {
+                try {
+                  const url = await uploadFileToStorage(file, userEmail);
+                  uploadedFileUrls.push(url);
+                } catch (err) {
+                  console.error(err);
+                }
+              }
             }
-          ])
-          .select() // ⭐ NEW
-            .then(({ data, error }) => {
-              if (error) {
-                console.error("Insert error:", error)
-                setCheckingLogin(false)
-                alert("❌ Failed to submit repair request.")
-                return
-              }
 
-              const repairId = data?.[0]?.id // ⭐ NEW
+            // --- Generate unique tracking ID and insert repair row ---
+            getUniqueTrackingID(supabase).then((tracking_id) => {
+              supabase
+                .from("repairs")
+                .insert([
+                  {
+                    user_id: userEmail,
+                    product_type: parsed.productType,
+                    product_model: parsed.productModel,
+                    serial_number: parsed.serialNumber,
+                    issue_description: parsed.issueDescription,
+                    pickup_date: parsed.pickupDate,
+                    uploaded_file_url: uploadedFileUrls.join(","), // <-- Use actual URL if present
+                    status: "Request Submitted",
+                    tracking_id
+                  }
+                ])
+                .select()
+                .then(({ data, error }) => {
+                  if (error) {
+                    console.error("Insert error:", error)
+                    setCheckingLogin(false)
+                    alert("❌ Failed to submit repair request.")
+                    return
+                  }
 
-              if (repairId) {
-                supabase
-                  .from("repair_status_logs")
-                  .insert([
-                    {
-                      repair_id: repairId, // ⭐ NEW
-                      status: "Request Submitted", // ⭐ NEW
-                    }
-                  ])
-                  .then(({ error: logError }) => {
-                    if (logError) {
-                      console.error("Status log insert failed:", logError) // ⭐ NEW
-                    }
-                    alert("✅ Repair request submitted! Check details in My Account > Repairs") // ⭐ NEW
-                    localStorage.removeItem("pendingRepair") // ⭐ NEW
-                    window.location.href = "/repair" // ⭐ NEW
-                  })
-              } else {
-                alert("❌ Repair submitted but could not log status.")
-                setCheckingLogin(false)
-              }
+                  const repairId = data?.[0]?.id
+
+                  if (repairId) {
+                    supabase
+                      .from("repair_status_logs")
+                      .insert([
+                        {
+                          repair_id: repairId,
+                          status: "Request Submitted",
+                        }
+                      ])
+                      .then(({ error: logError }) => {
+                        if (logError) {
+                          console.error("Status log insert failed:", logError)
+                        }
+                        alert("✅ Repair request submitted! Check details in My Account > Repairs")
+                        localStorage.removeItem("pendingRepair")
+                        window.location.href = "/repair"
+                      })
+                  } else {
+                    alert("❌ Repair submitted but could not log status.")
+                    setCheckingLogin(false)
+                  }
+                })
             })
-          })
-        }
+          }
         })
         .catch((err) => {
           console.error("Login check or insert failed:", err)
@@ -140,6 +166,9 @@ const interval = setInterval(() => {
         })
     }, 2000)
   }
+
+
+
   return (
     <div className="w-full flex-shrink-0 flex items-center justify-center p-8">
       <div className="max-w-3xl w-full">
