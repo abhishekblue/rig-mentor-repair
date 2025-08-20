@@ -23,15 +23,15 @@ export default function Step4({ formData, setFormData, nextStep, prevStep }: Ste
   }
 
   return (
-    <div className="w-full flex-shrink-0 flex items-center justify-center p-8">
+    <div className="w-full flex-shrink-0 flex justify-center px-4 py-2 sm:px-6 sm:py-4 md:px-8 md:py-8 items-start sm:items-center">
       <div className="max-w-3xl w-full">
-        <div className="text-center mb-16 animate-fade-in">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16 animate-fade-in">
           <div className="inline-block p-4 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-2xl mb-6">
             <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
               <Calendar className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h2 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">
             Select Pickup Date
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -53,7 +53,7 @@ export default function Step4({ formData, setFormData, nextStep, prevStep }: Ste
                 value={formData.pickupDate}
                 onChange={(e) => setFormData({ ...formData, pickupDate: e.target.value })}
                 min={getTodayDate()}
-                className="text-2xl font-bold text-center bg-white/80 backdrop-blur-sm border-2 border-gray-200/50 rounded-2xl px-8 py-4 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all duration-300"
+                className="text-xl sm:text-2xl font-bold text-center bg-white/80 backdrop-blur-sm border-2 border-gray-200/50 rounded-2xl px-4 py-3 sm:px-8 sm:py-4 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all duration-300"
               />
 
               {formData.pickupDate && (
@@ -99,7 +99,7 @@ export default function Step4({ formData, setFormData, nextStep, prevStep }: Ste
             <button
               onClick={nextStep}
               disabled={!canProceed}
-              className={`flex items-center px-10 py-4 rounded-2xl font-bold text-lg transition-all duration-300 ${
+              className={`flex items-center px-6 py-3 sm:px-10 sm:py-4 rounded-2xl font-bold text-lg transition-all duration-300 ${
                 canProceed
                   ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transform hover:-translate-y-0.5"
                   : "bg-gray-200 text-gray-400 cursor-not-allowed"

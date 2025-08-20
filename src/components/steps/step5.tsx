@@ -170,9 +170,9 @@ export default function Step5({ formData, prevStep }: StepProps) {
 
 
   return (
-    <div className="w-full flex-shrink-0 flex items-center justify-center p-8">
+    <div className="w-full flex-shrink-0 flex justify-center px-4 py-2 sm:px-6 sm:py-4 md:px-8 md:py-8 items-start sm:items-center">
       <div className="max-w-3xl w-full">
-        <div className="text-center mb-16 animate-fade-in">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16 animate-fade-in">
           <div className="inline-block p-4 bg-gradient-to-r from-green-600/10 to-blue-600/10 rounded-2xl mb-6">
             <div className="w-16 h-16 bg-gradient-to-r from-green-600 to-blue-600 rounded-xl flex items-center justify-center">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -185,7 +185,7 @@ export default function Step5({ formData, prevStep }: StepProps) {
               </svg>
             </div>
           </div>
-          <h2 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-green-800 to-blue-800 bg-clip-text text-transparent mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-green-800 to-blue-800 bg-clip-text text-transparent mb-6">
             Almost Done!
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -197,7 +197,7 @@ export default function Step5({ formData, prevStep }: StepProps) {
           <div className="space-y-6">
             <button
               onClick={handleLoginPopup}
-              className="w-full group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white py-6 px-8 rounded-2xl text-lg font-bold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transform hover:-translate-y-1"
+              className="w-full group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 text-base sm:py-6 sm:px-8 sm:text-lg rounded-2xl font-bold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transform hover:-translate-y-1"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative flex items-center justify-center space-x-3">

@@ -11,9 +11,9 @@ export default function Step1({ formData, setFormData, nextStep }: StepProps) {
   }
 
   return (
-    <div className="w-full flex-shrink-0 flex items-center justify-center p-8">
+    <div className="w-full flex-shrink-0 flex justify-center px-4 py-2 sm:px-6 sm:py-4 md:px-8 md:py-8 items-start sm:items-center min-h-screen sm:min-h-0 flex-col">
       <div className="max-w-6xl w-full">
-        <div className="text-center mb-16 animate-fade-in">
+        <div className="text-center sm:mb-12 md:mb-16 animate-fade-in">
           <div className="inline-block p-4 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-2xl mb-6">
             <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -26,7 +26,7 @@ export default function Step1({ formData, setFormData, nextStep }: StepProps) {
               </svg>
             </div>
           </div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">
             What needs repair?
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -34,7 +34,7 @@ export default function Step1({ formData, setFormData, nextStep }: StepProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-8 animate-slide-up">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 animate-slide-up">
           {productTypes.map((product) => (
             <ProductCard
               key={product.id}

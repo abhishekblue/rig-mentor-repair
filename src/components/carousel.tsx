@@ -50,13 +50,13 @@ export default function Carousel() {
 
   return (
     <div className="relative w-full max-w-6xl mx-auto rounded-lg overflow-hidden shadow-xl mb-16 h-96">
-      <div className="relative h-96 w-full overflow-hidden">
+      <div className="relative h-96 w-full overflow-hidden bg-black/35">
         <AnimatePresence initial={false} mode="wait">
           <motion.img
             key={slides[current].image}
             src={slides[current].image}
             alt={slides[current].title}
-            className="absolute w-full h-full object-contain"
+            className="absolute w-full h-full object-contain bg-black/35"
             initial={{ opacity: 0, x: direction > 0 ? 80 : -80 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: direction > 0 ? -80 : 80 }}

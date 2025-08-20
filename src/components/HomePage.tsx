@@ -5,9 +5,6 @@ import { motion } from 'framer-motion';
 import type { ServiceCardProps } from '../types';
 import Carousel from './carousel';
 
-
-import Navbar from './Navbar';
-
 type IconProps = {
   path: string
   className?: string
@@ -58,7 +55,6 @@ const icons = {
 const Page = () => {
   return (
     <div className="bg-gray-50 min-h-screen font-sans cursor-default">
-      <Navbar />
       <main className="container mx-auto px-4 py-16">
         <Carousel />
         

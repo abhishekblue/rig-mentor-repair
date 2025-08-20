@@ -46,8 +46,8 @@ const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 
     validFiles.push(file);
   }
-
-  setFormData({ ...formData, uploadedFiles: validFiles });
+    const allFiles = [...formData.uploadedFiles, ...validFiles].slice(0, MAX_FILES);
+    setFormData({ ...formData, uploadedFiles: allFiles });
 };
 
 
@@ -58,9 +58,9 @@ const removeFile = (index: number) => {
 };
 
   return (
-    <div className="w-full flex-shrink-0 flex items-center justify-center p-8">
+    <div className="w-full flex-shrink-0 flex justify-center px-4 py-2 sm:px-6 sm:py-4 md:px-8 md:py-8 items-start sm:items-center">
       <div className="max-w-3xl w-full">
-        <div className="text-center mb-16 animate-fade-in">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16 animate-fade-in">
           <div className="inline-block p-4 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-2xl mb-6">
             <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +73,7 @@ const removeFile = (index: number) => {
               </svg>
             </div>
           </div>
-          <h2 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">
             Describe the Issue
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -93,7 +93,7 @@ const removeFile = (index: number) => {
                 onChange={(e) => setFormData({ ...formData, issueDescription: e.target.value })}
                 placeholder="Please describe the problem in detail. What symptoms are you experiencing? When did it start? Any error messages?"
                 rows={6}
-                className="w-full px-6 py-5 text-lg bg-white/80 backdrop-blur-sm border-2 border-gray-200/50 rounded-2xl focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all duration-300 resize-none placeholder-gray-400"
+                className="w-full px-4 py-3 text-base sm:px-6 sm:py-5 sm:text-lg bg-white/80 backdrop-blur-sm border-2 border-gray-200/50 rounded-2xl focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition-all duration-300 resize-none placeholder-gray-400"
               />
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600/5 to-purple-600/5 opacity-0 focus-within:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </div>
@@ -108,7 +108,7 @@ const removeFile = (index: number) => {
             {formData.uploadedFiles.length === 0 ? (
             <div
               onClick={() => fileInputRef.current?.click()}
-              className="group border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center cursor-pointer hover:border-blue-400 hover:bg-gradient-to-br hover:from-blue-50/50 hover:to-purple-50/50 transition-all duration-300"
+              className="group border-2 border-dashed border-gray-300 rounded-2xl p-6 sm:p-10 md:p-12 text-center cursor-pointer hover:border-blue-400 hover:bg-gradient-to-br hover:from-blue-50/50 hover:to-purple-50/50 transition-all duration-300"
             >
               <div className="flex flex-col items-center space-y-4">
                 <div className="p-4 bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl group-hover:from-blue-200 group-hover:to-purple-200 transition-colors duration-300">
@@ -192,7 +192,7 @@ const removeFile = (index: number) => {
             <button
               onClick={nextStep}
               disabled={!canProceed}
-              className={`flex items-center px-10 py-4 rounded-2xl font-bold text-lg transition-all duration-300 ${
+              className={`flex items-center px-6 py-3 sm:px-10 sm:py-4 rounded-2xl font-bold text-lg transition-all duration-300 ${
                 canProceed
                   ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transform hover:-translate-y-0.5"
                   : "bg-gray-200 text-gray-400 cursor-not-allowed"
